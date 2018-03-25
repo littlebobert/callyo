@@ -21,6 +21,8 @@
 		D0620C3120644C9E002E6EFB /* Forecast.m in Sources */ = {isa = PBXBuildFile; fileRef = D0620C3020644C9E002E6EFB /* Forecast.m */; };
 		D0620C3420645491002E6EFB /* WeatherAPIController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0620C3320645491002E6EFB /* WeatherAPIController.m */; };
 		D0620C3720645BCC002E6EFB /* JSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0620C3620645BCC002E6EFB /* JSONParser.m */; };
+		D0B82C9820682E7F00C7A090 /* ForecastDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B82C9720682E7F00C7A090 /* ForecastDetailViewController.m */; };
+		D0B82C9B206838D900C7A090 /* NSDate+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B82C9A206838D900C7A090 /* NSDate+Extras.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,10 @@
 		D0620C3320645491002E6EFB /* WeatherAPIController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeatherAPIController.m; sourceTree = "<group>"; };
 		D0620C3520645BCC002E6EFB /* JSONParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
 		D0620C3620645BCC002E6EFB /* JSONParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSONParser.m; sourceTree = "<group>"; };
+		D0B82C9620682E7F00C7A090 /* ForecastDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForecastDetailViewController.h; sourceTree = "<group>"; };
+		D0B82C9720682E7F00C7A090 /* ForecastDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForecastDetailViewController.m; sourceTree = "<group>"; };
+		D0B82C99206838D900C7A090 /* NSDate+Extras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Extras.h"; sourceTree = "<group>"; };
+		D0B82C9A206838D900C7A090 /* NSDate+Extras.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Extras.m"; sourceTree = "<group>"; };
 		F06943B23D6AF23BE0270F30 /* Pods-callyo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-callyo.release.xcconfig"; path = "Pods/Target Support Files/Pods-callyo/Pods-callyo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +152,8 @@
 				D0620C292064446E002E6EFB /* City.m */,
 				D0620C2F20644C9E002E6EFB /* Forecast.h */,
 				D0620C3020644C9E002E6EFB /* Forecast.m */,
+				D0B82C9620682E7F00C7A090 /* ForecastDetailViewController.h */,
+				D0B82C9720682E7F00C7A090 /* ForecastDetailViewController.m */,
 				D0620BFA20644122002E6EFB /* ForecastsViewController.h */,
 				D0620BFB20644122002E6EFB /* ForecastsViewController.m */,
 				D0620C2D2064447D002E6EFB /* ForecastTableViewCell.h */,
@@ -157,6 +165,8 @@
 				D0620C0220644122002E6EFB /* LaunchScreen.storyboard */,
 				D0620C0520644122002E6EFB /* Info.plist */,
 				D0620C0620644122002E6EFB /* main.m */,
+				D0B82C99206838D900C7A090 /* NSDate+Extras.h */,
+				D0B82C9A206838D900C7A090 /* NSDate+Extras.m */,
 				D0620C3220645491002E6EFB /* WeatherAPIController.h */,
 				D0620C3320645491002E6EFB /* WeatherAPIController.m */,
 			);
@@ -377,8 +387,10 @@
 				D0620BFC20644122002E6EFB /* ForecastsViewController.m in Sources */,
 				D0620C0720644122002E6EFB /* main.m in Sources */,
 				D0620C2B2064446F002E6EFB /* City.m in Sources */,
+				D0B82C9B206838D900C7A090 /* NSDate+Extras.m in Sources */,
 				D0620C3720645BCC002E6EFB /* JSONParser.m in Sources */,
 				D0620BF920644122002E6EFB /* AppDelegate.m in Sources */,
+				D0B82C9820682E7F00C7A090 /* ForecastDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,9 @@
 @property (strong, nonatomic) UIImage *icon;
 @property (strong, nonatomic) NSDate *time;
 @property (strong, nonatomic) NSString *forecastDescription;
-@property (nonatomic) CGFloat high;
-@property (nonatomic) CGFloat low;
-@property (nonatomic) CGFloat humidity;
+@property (nonatomic) float highInKelvin;
+@property (readonly, nonatomic) float highInFarenheit;
+@property (nonatomic) float lowInKelvin;
+@property (readonly, nonatomic) float lowInFarenheit;
+@property (nonatomic) float humidity;
 @end

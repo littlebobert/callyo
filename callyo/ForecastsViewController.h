@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ForecastsViewController : UIViewController <UITableViewDataSource>
+@interface ForecastsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end
 

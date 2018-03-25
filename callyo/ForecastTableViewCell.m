@@ -10,10 +10,6 @@
 
 #import "Forecast.h"
 
-static float fahrenheitFromKelvin(float temperatureInKelvin) {
-    return temperatureInKelvin * 9.0 / 5.0 - 459.67;
-}
-
 @interface ForecastTableViewCell ()
 @property (weak, nonatomic) IBOutlet UIImageView *forecastIcon;
 @property (weak, nonatomic) IBOutlet UILabel *dateAndTimeLabel;
@@ -44,8 +40,8 @@ static float fahrenheitFromKelvin(float temperatureInKelvin) {
     }
     self.dateAndTimeLabel.text = [formatter stringFromDate:forecast.time];
     self.descriptionLabel.text = forecast.forecastDescription;
-    int high = fahrenheitFromKelvin(forecast.high);
-    int low = fahrenheitFromKelvin(forecast.low);
+    int high = forecast.highInFarenheit;
+    int low = forecast.lowInFarenheit;
     self.highLowLabel.text = [NSString stringWithFormat:@"%d°/%d°", high, low];
 }
 

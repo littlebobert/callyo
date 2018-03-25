@@ -42,8 +42,8 @@
         forecast.time = [self timeFromForecastDictionary:forecastDictionary];
         float high, low, humidity;
         [self getHigh:&high low:&low andHumidity:&humidity fromForecastDictionary:forecastDictionary];
-        forecast.high = high;
-        forecast.low = low;
+        forecast.highInKelvin = high;
+        forecast.lowInKelvin = low;
         forecast.humidity = humidity;
         
         [forecasts addObject:forecast];

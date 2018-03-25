@@ -13,9 +13,11 @@
 #import "City.h"
 #import "Forecast.h"
 #import "ForecastTableViewCell.h"
+#import "ForecastDetailViewController.h"
+#import "NSDate+Extras.h"
 #import "WeatherAPIController.h"
 
-static NSArray<NSArray<Forecast *> *> *forecastMatrixForArray(NSArray<Forecast *> *array) {
+static NSArray<NSArray<Forecast *> *> *sectionsForArray(NSArray<Forecast *> *array) {
     NSMutableArray<NSMutableArray<Forecast *> *> *results = [NSMutableArray array];
     static NSDateFormatter *formatter;
     if (formatter == nil) {
@@ -32,7 +34,7 @@ static NSArray<NSArray<Forecast *> *> *forecastMatrixForArray(NSArray<Forecast *
                 [forecastsForPreviousDay addObject:forecast];
             } else {
                 [results addObject:forecastsForPreviousDay];
-                forecastsForPreviousDay = [NSMutableArray array];
+                forecastsForPreviousDay = [NSMutableArray arrayWithObject:forecast];
             }
         } else {
             [forecastsForPreviousDay addObject:forecast];
@@ -41,12 +43,16 @@ static NSArray<NSArray<Forecast *> *> *forecastMatrixForArray(NSArray<Forecast *
         previousDay = day;
     }
     
+    if (forecastsForPreviousDay.count > 0) {
+        [results addObject:forecastsForPreviousDay];
+    }
+    
     return results;
 }
 
 @interface ForecastsViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSArray<NSArray<Forecast *> *> *forecastsMatrix;
+@property (strong, nonatomic) NSArray<NSArray<Forecast *> *> *sections;
 @property (strong, nonatomic) City *city;
 @end
 
@@ -56,8 +62,9 @@ static NSArray<NSArray<Forecast *> *> *forecastMatrixForArray(NSArray<Forecast *
     [super viewDidLoad];
     
     self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
-    self.forecastsMatrix = [NSArray array];
+    self.sections = [NSArray array];
     [self.tableView reloadData];
     
     City *defaultCity = [[City alloc] init];
@@ -70,7 +77,7 @@ static NSArray<NSArray<Forecast *> *> *forecastMatrixForArray(NSArray<Forecast *
     [WeatherAPIController fetchForecastsForCity:self.city completionHandler:^(NSArray<Forecast *> *forecasts) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD dismiss];
-            self.forecastsMatrix = forecastMatrixForArray(forecasts);
+            self.sections = sectionsForArray(forecasts);
             [self.tableView reloadData];
         });
     } errorHandler:^(NSError *error) {
@@ -88,15 +95,15 @@ static NSArray<NSArray<Forecast *> *> *forecastMatrixForArray(NSArray<Forecast *
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.forecastsMatrix objectAtIndex:section].count;
+    return [self.sections objectAtIndex:section].count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.forecastsMatrix.count;
+    return self.sections.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSArray<Forecast *> *forecasts = [self.forecastsMatrix objectAtIndex:section];
+    NSArray<Forecast *> *forecasts = [self.sections objectAtIndex:section];
     if (forecasts.count == 0) {
         return nil;
     }
@@ -106,15 +113,44 @@ static NSArray<NSArray<Forecast *> *> *forecastMatrixForArray(NSArray<Forecast *
         formatter.dateFormat = @"MMMM d";
     }
     NSDate *time = [forecasts objectAtIndex:0].time;
+    NSDate *currentTime = [NSDate date];
+    if ([[NSCalendar currentCalendar] isDate:currentTime inSameDayAsDate:time]) {
+        return @"Today";
+    }
+    NSDate *tomorrow = [NSDate CETomorrow];
+    if ([[NSCalendar currentCalendar] isDate:tomorrow inSameDayAsDate:time]) {
+        return @"Tomorrow";
+    }
     return [formatter stringFromDate:time];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ForecastTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ForecastTableViewCell" forIndexPath:indexPath];
-    NSArray<Forecast *> *forecasts = [self.forecastsMatrix objectAtIndex:indexPath.section];
+    NSArray<Forecast *> *forecasts = [self.sections objectAtIndex:indexPath.section];
     Forecast *forecast = [forecasts objectAtIndex:indexPath.row];
     [cell configureWith:forecast];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"ShowForecastDetail" sender:indexPath];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ShowForecastDetail"]) {
+        if (![sender isKindOfClass:[NSIndexPath class]]) {
+            return;
+        }
+        NSIndexPath *indexPath = (NSIndexPath *)sender;
+        NSArray<Forecast *> *forecasts = self.sections[indexPath.section];
+        Forecast *forecast = forecasts[indexPath.row];
+        if (![segue.destinationViewController isKindOfClass:[ForecastDetailViewController class]]) {
+            return;
+        }
+        ForecastDetailViewController *forecastDetailViewController = (ForecastDetailViewController *)segue.destinationViewController;
+        forecastDetailViewController.forecast = forecast;
+    }
 }
 
 @end
