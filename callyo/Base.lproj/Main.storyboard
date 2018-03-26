@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NL4-aN-g76">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="102" width="375" height="565"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ForecastTableViewCell" id="PsN-Ce-CqX" customClass="ForecastTableViewCell">
@@ -37,7 +37,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zL8-hi-CwM" userLabel="Time">
-                                                    <rect key="frame" x="65" y="10.5" width="72" height="22.5"/>
+                                                    <rect key="frame" x="65" y="12" width="72" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="72" id="0c0-sc-wsp"/>
                                                     </constraints>
@@ -80,18 +80,41 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a new city and tap Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VtM-F7-xgK">
+                                <rect key="frame" x="16" y="68" width="287" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dUu-Ah-drY">
+                                <rect key="frame" x="311" y="68" width="48" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="mzP-cy-iQf"/>
+                                </constraints>
+                                <state key="normal" title="Search"/>
+                                <connections>
+                                    <action selector="searchButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BN9-cM-wSm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="NL4-aN-g76" secondAttribute="trailing" id="2u6-5Z-Ktb"/>
-                            <constraint firstItem="NL4-aN-g76" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="2zj-1e-FeM"/>
-                            <constraint firstItem="NL4-aN-g76" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="8fN-az-LBb"/>
-                            <constraint firstItem="NL4-aN-g76" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ARO-uM-18L"/>
+                            <constraint firstAttribute="trailing" secondItem="NL4-aN-g76" secondAttribute="trailing" id="94Q-9X-y8e"/>
+                            <constraint firstItem="NL4-aN-g76" firstAttribute="top" secondItem="VtM-F7-xgK" secondAttribute="bottom" constant="4" id="EBx-Bg-pD4"/>
+                            <constraint firstItem="dUu-Ah-drY" firstAttribute="leading" secondItem="VtM-F7-xgK" secondAttribute="trailing" constant="8" symbolic="YES" id="TcA-lt-XhL"/>
+                            <constraint firstItem="VtM-F7-xgK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="bUP-Ri-ohs"/>
+                            <constraint firstItem="VtM-F7-xgK" firstAttribute="top" secondItem="dUu-Ah-drY" secondAttribute="top" id="cZx-rT-h4n"/>
+                            <constraint firstItem="dUu-Ah-drY" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="hhg-Fe-sBE"/>
+                            <constraint firstItem="NL4-aN-g76" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="loJ-3K-GPN"/>
+                            <constraint firstItem="NL4-aN-g76" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="sk0-ui-7fx"/>
+                            <constraint firstItem="VtM-F7-xgK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="4" id="uHm-dp-pnS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="mie-ke-FjT"/>
                     <connections>
+                        <outlet property="searchButton" destination="dUu-Ah-drY" id="gKq-vZ-I5L"/>
+                        <outlet property="searchField" destination="VtM-F7-xgK" id="4Ma-dE-nBI"/>
                         <outlet property="tableView" destination="NL4-aN-g76" id="2hZ-l0-Wyd"/>
                         <segue destination="p38-OE-4qH" kind="show" identifier="ShowForecastDetail" id="U6x-R0-oJb"/>
                     </connections>

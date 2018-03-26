@@ -52,11 +52,39 @@ static NSArray<NSArray<Forecast *> *> *sectionsForArray(NSArray<Forecast *> *arr
 
 @interface ForecastsViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITextField *searchField;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
 @property (strong, nonatomic) NSArray<NSArray<Forecast *> *> *sections;
 @property (strong, nonatomic) City *city;
 @end
 
 @implementation ForecastsViewController
+
+- (void)setCity:(City *)city {
+    _city = city;
+    
+    self.title = city.name;
+    
+    [SVProgressHUD showWithStatus:[NSString stringWithFormat:@"Fetching weather for %@", city.name]];
+    __weak ForecastsViewController *weakSelf = self;
+    [WeatherAPIController fetchForecastsForCity:city completionHandler:^(NSArray<Forecast *> *forecasts) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD dismiss];
+            weakSelf.sections = sectionsForArray(forecasts);
+            [self.tableView reloadData];
+            if ([forecasts count] == 0) {
+                NSString *errorString = [NSString stringWithFormat:@"Didn't receive any forecasts for the city \"%@\"", weakSelf.city.name];
+                [SVProgressHUD showErrorWithStatus:errorString];
+            }
+        });
+    } errorHandler:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"There was an error fetching weather data. Please try again later."];
+            NSLog(@"Encountered an error fetching weather data: %@", error);
+        });
+    }];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,27 +99,25 @@ static NSArray<NSArray<Forecast *> *> *sectionsForArray(NSArray<Forecast *> *arr
     defaultCity.name = @"New York";
     self.city = defaultCity;
     
-    self.title = self.city.name;
+    self.searchButton.enabled = NO;
+    self.searchField.delegate = self;
     
-    [SVProgressHUD showWithStatus:[NSString stringWithFormat:@"Fetching weather for %@", self.city.name]];
-    [WeatherAPIController fetchForecastsForCity:self.city completionHandler:^(NSArray<Forecast *> *forecasts) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD dismiss];
-            self.sections = sectionsForArray(forecasts);
-            [self.tableView reloadData];
-        });
-    } errorHandler:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD dismiss];
-            [SVProgressHUD showErrorWithStatus:@"There was an error fetching weather data. Please try again later."];
-            NSLog(@"Encountered an error fetching weather data: %@", error);
-        });
-    }];
+    [self.searchField addTarget:self action:@selector(searchFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)searchFieldTextDidChange:(id)sender {
+    self.searchButton.enabled = [self.searchField.text length] != 0;
+}
+
+- (IBAction)searchButtonPressed:(id)sender {
+    City *newCity = [[City alloc] init];
+    newCity.name = self.searchField.text;
+    self.city = newCity;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
